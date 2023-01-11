@@ -20,8 +20,8 @@ app.listen(port, () => {
 
 const fetcher = async () => {
   return await fetch(
-    "https://statsapi.web.nhl.com/api/v1/schedule?date=2022-12-4&expand=schedule.linescore"
-    // "https://statsapi.web.nhl.com/api/v1/schedule?expand=schedule.linescore"
+    // "https://statsapi.web.nhl.com/api/v1/schedule?date=2022-12-4&expand=schedule.linescore"
+    "https://statsapi.web.nhl.com/api/v1/schedule?expand=schedule.linescore"
   )
     .then((response) => response.json())
     .then((data) => data as Root)
