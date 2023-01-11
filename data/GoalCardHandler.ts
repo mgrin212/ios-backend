@@ -2,7 +2,6 @@ import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 import { GoalCard } from '../index';
 import { option } from 'fp-ts';
-import fetch from "node-fetch";
 
 export interface RootPlays {
   plays: Plays;
