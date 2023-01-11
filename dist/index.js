@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const GoalCardHandler_1 = require("./data/GoalCardHandler");
+const node_fetch_1 = __importDefault(require("node-fetch"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -27,9 +28,9 @@ app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 const fetcher = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield fetch("https://statsapi.web.nhl.com/api/v1/schedule?date=2022-12-4&expand=schedule.linescore"
-    // "https://statsapi.web.nhl.com/api/v1/schedule?expand=schedule.linescore"
-    )
+    return yield (0, node_fetch_1.default)(
+    // "https://statsapi.web.nhl.com/api/v1/schedule?date=2022-12-4&expand=schedule.linescore"
+    "https://statsapi.web.nhl.com/api/v1/schedule?expand=schedule.linescore")
         .then((response) => response.json())
         .then((data) => data)
         .then((data) => makeGameObjects(data));

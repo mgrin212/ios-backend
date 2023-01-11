@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { Root } from "./data/types";
 import { getAllFromID } from "./data/GoalCardHandler";
+import fetch from "node-fetch";
+
 
 dotenv.config();
 
