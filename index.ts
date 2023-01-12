@@ -11,17 +11,22 @@ const app: Express = express();
 const port = process.env.PORT;
 const key = process.env.API_KEY;
 
-app.get("/", async (req: Request, res: Response) => {
+let outRoot: RootOut
+const setOutRoot = async () => {
   var games = await fetcher();
-  var standings = await (await getStandings()).divisions
-  var out = {games: games, standings: standings} as RootOut
-  res.send(JSON.stringify(out))
+  var standings = (await getStandings()).divisions
+  outRoot = {games: games, standings: standings} as RootOut
+}
+
+setInterval(setOutRoot, 5000)
+
+app.get("/", async (req: Request, res: Response) => {
+  // var games = await fetcher();
+  // var standings = (await getStandings()).divisions
+  // var out = {games: games, standings: standings} as RootOut
+  res.send(JSON.stringify(outRoot))
 });
 
-app.get("/standings", async (req: Request, res: Response) => {
-  var standings = await getStandings()
-  res.send(JSON.stringify(standings.divisions))
-  })
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

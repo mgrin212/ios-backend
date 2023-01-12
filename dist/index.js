@@ -20,15 +20,18 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 const key = process.env.API_KEY;
-app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+let outRoot;
+const setOutRoot = () => __awaiter(void 0, void 0, void 0, function* () {
     var games = yield fetcher();
-    var standings = yield (yield (0, Standings_1.getStandings)()).divisions;
-    var out = { games: games, standings: standings };
-    res.send(JSON.stringify(out));
-}));
-app.get("/standings", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var standings = yield (0, Standings_1.getStandings)();
-    res.send(JSON.stringify(standings.divisions));
+    var standings = (yield (0, Standings_1.getStandings)()).divisions;
+    outRoot = { games: games, standings: standings };
+});
+setInterval(setOutRoot, 5000);
+app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // var games = await fetcher();
+    // var standings = (await getStandings()).divisions
+    // var out = {games: games, standings: standings} as RootOut
+    res.send(JSON.stringify(outRoot));
 }));
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
