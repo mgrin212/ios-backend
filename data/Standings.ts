@@ -1,3 +1,4 @@
+import { About } from './GoalCardHandler';
 export interface Root {
     copyright: string;
     records: Record[];
@@ -82,7 +83,7 @@ export interface Root {
   
   
   export interface StandingsRowProps {
-      team: string;
+      team: number;
       gamesPlayed: number;
       wins: number;
       losses: number;
@@ -109,9 +110,9 @@ export interface Root {
       const standings = data.records as Record[];
       const divisions = standings.map((division) => {
           const divisionName = division.division.name;
-          const standingsRows = division.teamRecords.map((team) => {
+          const standingsRows = division.teamRecords.map((team, index) => {
               return {
-                  team: team.team.name,
+                  team: team.team.id,
                   gamesPlayed: team.gamesPlayed,
                   wins: team.leagueRecord.wins,
                   losses: team.leagueRecord.losses,
@@ -147,7 +148,7 @@ export interface Root {
       const standingsALl = standings.flatMap((division) => division.teamRecords)
       const standingsRows = standingsALl.map((team) => {
           return {
-              team: team.team.name,
+              team: team.team.id,
               gamesPlayed: team.gamesPlayed,
               wins: team.leagueRecord.wins,
               losses: team.leagueRecord.losses,

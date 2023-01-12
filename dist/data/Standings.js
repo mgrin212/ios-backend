@@ -18,9 +18,9 @@ function getStandings() {
         const standings = data.records;
         const divisions = standings.map((division) => {
             const divisionName = division.division.name;
-            const standingsRows = division.teamRecords.map((team) => {
+            const standingsRows = division.teamRecords.map((team, index) => {
                 return {
-                    team: team.team.name,
+                    team: team.team.id,
                     gamesPlayed: team.gamesPlayed,
                     wins: team.leagueRecord.wins,
                     losses: team.leagueRecord.losses,
@@ -52,7 +52,7 @@ function getLeagueStandings() {
         const standingsALl = standings.flatMap((division) => division.teamRecords);
         const standingsRows = standingsALl.map((team) => {
             return {
-                team: team.team.name,
+                team: team.team.id,
                 gamesPlayed: team.gamesPlayed,
                 wins: team.leagueRecord.wins,
                 losses: team.leagueRecord.losses,
