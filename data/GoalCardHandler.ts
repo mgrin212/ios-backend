@@ -195,7 +195,7 @@ function getStartingTime(timeString: string): Date {
     return new Date(timeString);
   }
   function getTimeUntil(date: Date): string {
-    let hours = date.getHours().toString();
+    let hours = ((date.getHours() + 7) % 12).toString();
     const minutes = date.getMinutes().toString().padStart(2, "0");
     let period = "AM";
     if (parseInt(hours) >= 12) {
