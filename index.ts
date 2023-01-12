@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { Root } from "./data/types";
 import { getAllFromID } from "./data/GoalCardHandler";
+import { DivisionProps, getLeagueStandings, getStandings } from "./data/Standings";
 
 
 dotenv.config();
@@ -12,8 +13,15 @@ const key = process.env.API_KEY;
 
 app.get("/", async (req: Request, res: Response) => {
   var games = await fetcher();
-  res.send(JSON.stringify(games))
+  var standings = await (await getStandings()).divisions
+  var out = {games: games, standings: standings} as RootOut
+  res.send(JSON.stringify(out))
 });
+
+app.get("/standings", async (req: Request, res: Response) => {
+  var standings = await getStandings()
+  res.send(JSON.stringify(standings.divisions))
+  })
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
@@ -67,6 +75,11 @@ export interface GoalCard {
   awayScore: number;
   time: string;
   shotType: string;
+}
+
+export interface RootOut {
+  games: GameObject[]
+  standings: DivisionProps[]
 }
 
 

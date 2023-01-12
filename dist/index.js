@@ -15,13 +15,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const GoalCardHandler_1 = require("./data/GoalCardHandler");
+const Standings_1 = require("./data/Standings");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 const key = process.env.API_KEY;
 app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var games = yield fetcher();
-    res.send(JSON.stringify(games));
+    var standings = yield (yield (0, Standings_1.getStandings)()).divisions;
+    var out = { games: games, standings: standings };
+    res.send(JSON.stringify(out));
+}));
+app.get("/standings", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var standings = yield (0, Standings_1.getStandings)();
+    res.send(JSON.stringify(standings.divisions));
 }));
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
