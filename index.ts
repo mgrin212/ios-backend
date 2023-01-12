@@ -46,15 +46,16 @@ const fetcher = async () => {
 
 const makeGameObjects = (root: Root) => {
   let data = root.dates[0].games.map(async (game) => {
-    let goalProps = await getAllFromID(game.gamePk)
+    let [goalProps, dateTime] = await getAllFromID(game.gamePk)
     const gameObject: GameObject = {
       homeTeam: game.teams.home.team.name,
       awayTeam: game.teams.away.team.name,
       homeScore: game.teams.home.score,
       awayScore: game.teams.away.score,
-      currentPeriodOrdinal: game.linescore.currentPeriodOrdinal? game.linescore.currentPeriodOrdinal : "Final",
-      currentPeriodTimeRemaining: game.linescore.currentPeriodTimeRemaining? game.linescore.currentPeriodTimeRemaining : "Final",
+      currentPeriodOrdinal: game.linescore.currentPeriodOrdinal? game.linescore.currentPeriodOrdinal : dateTime,
+      currentPeriodTimeRemaining: game.linescore.currentPeriodTimeRemaining? game.linescore.currentPeriodTimeRemaining : "",
       goalCards: goalProps,
+      dateTime: dateTime
     };
     return gameObject;
   });
@@ -68,7 +69,8 @@ interface GameObject {
   awayScore: number;
   currentPeriodOrdinal: string;
   currentPeriodTimeRemaining: string;
-  goalCards: GoalCard[]
+  goalCards: GoalCard[];
+  dateTime: string;
 }
 
 export interface GoalCard {

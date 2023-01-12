@@ -177,12 +177,33 @@ function shotType(play: Play) {
     console.log(goals);
   };
 
-export const getAllFromID = async (id: number): Promise<GoalCard[]> => {
+export const getAllFromID = async (id: number): Promise<[GoalCard[], string]> => {
     const response = await fetch(
       "https://statsapi.web.nhl.com/api/v1/game/" + id + "/feed/live"
     );
     const data = await response.json() as any;
     const plays = data.liveData.plays as Plays;
+    const dt = data.gameData.datetime.dateTime;
+    const timeUntil = getGameTime(dt)
     const goals = getAllGoalProps(plays);
-    return goals
+    return [goals, timeUntil]
 }
+
+
+
+function getStartingTime(timeString: string): Date {
+    return new Date(timeString);
+  }
+  function getTimeUntil(date: Date): string {
+    let hours = date.getHours().toString();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    let period = "AM";
+    if (parseInt(hours) >= 12) {
+      period = "PM";
+      if (parseInt(hours) > 12) {
+        hours = (parseInt(hours) - 12).toString();
+      }
+    }
+    return `${hours}:${minutes} ${period}`;
+  }
+  const getGameTime = (time: string) => getTimeUntil(getStartingTime(time));

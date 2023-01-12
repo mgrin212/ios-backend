@@ -46,15 +46,16 @@ const fetcher = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const makeGameObjects = (root) => {
     let data = root.dates[0].games.map((game) => __awaiter(void 0, void 0, void 0, function* () {
-        let goalProps = yield (0, GoalCardHandler_1.getAllFromID)(game.gamePk);
+        let [goalProps, dateTime] = yield (0, GoalCardHandler_1.getAllFromID)(game.gamePk);
         const gameObject = {
             homeTeam: game.teams.home.team.name,
             awayTeam: game.teams.away.team.name,
             homeScore: game.teams.home.score,
             awayScore: game.teams.away.score,
-            currentPeriodOrdinal: game.linescore.currentPeriodOrdinal ? game.linescore.currentPeriodOrdinal : "Final",
-            currentPeriodTimeRemaining: game.linescore.currentPeriodTimeRemaining ? game.linescore.currentPeriodTimeRemaining : "Final",
+            currentPeriodOrdinal: game.linescore.currentPeriodOrdinal ? game.linescore.currentPeriodOrdinal : dateTime,
+            currentPeriodTimeRemaining: game.linescore.currentPeriodTimeRemaining ? game.linescore.currentPeriodTimeRemaining : "",
             goalCards: goalProps,
+            dateTime: dateTime
         };
         return gameObject;
     }));

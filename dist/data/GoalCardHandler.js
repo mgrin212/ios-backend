@@ -120,7 +120,25 @@ const getAllFromID = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield fetch("https://statsapi.web.nhl.com/api/v1/game/" + id + "/feed/live");
     const data = yield response.json();
     const plays = data.liveData.plays;
+    const dt = data.gameData.datetime.dateTime;
+    const timeUntil = getGameTime(dt);
     const goals = getAllGoalProps(plays);
-    return goals;
+    return [goals, timeUntil];
 });
 exports.getAllFromID = getAllFromID;
+function getStartingTime(timeString) {
+    return new Date(timeString);
+}
+function getTimeUntil(date) {
+    let hours = date.getHours().toString();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    let period = "AM";
+    if (parseInt(hours) >= 12) {
+        period = "PM";
+        if (parseInt(hours) > 12) {
+            hours = (parseInt(hours) - 12).toString();
+        }
+    }
+    return `${hours}:${minutes} ${period}`;
+}
+const getGameTime = (time) => getTimeUntil(getStartingTime(time));
